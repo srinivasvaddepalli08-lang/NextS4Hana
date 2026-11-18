@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" spellcheck="false">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<script src="src/scripts/theme-init.js"></script>
+<meta name="theme-color" content="#03b1ed" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b1622" media="(prefers-color-scheme: dark)">
+<title>NextS4HANA</title>
+<link rel="stylesheet" href="src/styles/main.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700&display=swap">
+<link rel="icon" type="image/png" sizes="64x64" href="public/images/favicon.png">
+<link rel="apple-touch-icon" href="public/images/apple-touch-icon.png">
+
+</head>
+<body>
+<section id="lock" class="lock">
+  <div class="lbox">
+    <img src="public/images/logo.png" alt="NextS4 HANA" style="height:60px;align-self:flex-start"><h2 id="lt">Sign in</h2>
+    <input id="lu" placeholder="Employee Id, email or username" autocomplete="username">
+    <input id="lrc" placeholder="Recovery code (not needed for the page owner)" autocomplete="off" hidden>
+    <input id="lp" type="password" placeholder="Password" autocomplete="current-password">
+    <input id="lp2" type="password" placeholder="Confirm password" autocomplete="new-password" hidden>
+    <div id="lcaps" class="lcaps" hidden>⚠ Caps Lock is on</div>
+    <button class="p" id="lgo">Sign in</button>
+    <div id="lrow" style="display:flex;justify-content:space-between;gap:10px"><button class="lnk" id="lshow" type="button">Show password</button><button class="lnk" id="lforgot" type="button">Forgot password?</button></div>
+    <div id="lrec" hidden><p>Keep this code somewhere safe. It is the only way to reset your password if you forget it, and it is shown just once.</p><div id="lcode" style="margin:10px 0"></div><button class="p" id="lrecok" style="width:100%">I have saved it, continue</button></div>
+    <div id="lm"></div>
+  </div>
+</section>
+<main id="app" hidden>
+<header class="top"><img class="logo" src="public/images/logo.png" alt="NextS4 HANA"><nav class="nav" id="nav"><a href="#" data-p="home">Home</a><a href="#leads" data-p="leads">Leads</a><a href="#payments-paid" data-p="payments">Payments</a><a href="#users" data-p="users">User</a></nav><span class="hdate" id="hdate"></span><div class="gear"><button id="gbtn" class="gbtn" type="button" title="Profile and settings" aria-label="Profile and settings"><img id="gtop" alt="" hidden><b id="gtini"></b></button><div class="gtn" id="gtn"></div>
+<div class="gmenu" id="gmenu" hidden>
+<div class="gl">Profile Picture</div>
+<div class="grow"><span class="gav"><img id="gimg" alt="" hidden><b id="gini"></b></span><button class="lnk2" id="gpick" type="button">Change picture</button><input id="gfile" type="file" accept="image/*" hidden></div>
+<div class="gl">Profile Name</div>
+<input id="gname" maxlength="40" placeholder="Your name">
+<div class="gl">Role</div><div id="grole" style="font-weight:700">User</div>
+<button class="gi" id="gvld" type="button">Data validation</button>
+<button class="gi" id="gnotif" type="button">Notifications &amp; WhatsApp</button>
+<button class="lnk2" id="gthauto" type="button" hidden>Use device setting</button>
+<button class="gi" id="gtheme" type="button"></button>
+<button class="gi" id="gpw" type="button">Reset Password</button>
+<button class="gi" id="lout" type="button">Logout</button>
+</div></div></header>
+<div id="note"></div>
+<div id="home">
+<div class="group"><div style="font-weight:800;font-size:18px;color:#07294d;margin:2px 0 8px">Dashboard<button class="cust" id="hubbtn" type="button" title="Filter the graphs">Customize</button></div>
+<div class="pop" id="pop-hub" hidden></div>
+<div class="stats" id="stats"></div>
+<div class="bar" id="bar"></div></div>
+<div class="two">
+<div class="col"><div style="font-weight:800;font-size:18px;color:#07294d;margin:4px 0 8px">Month Analysis<button class="cust" data-cust="month" type="button">Customize</button></div>
+<div class="pop" id="pop-month" hidden></div>
+<div class="months" id="d90"></div></div>
+<div class="col"><div style="font-weight:800;font-size:18px;color:#07294d;margin:4px 0 8px">Source Analysis<button class="cust" data-cust="source" type="button">Customize</button></div>
+<div class="pop" id="pop-source" hidden></div>
+<div class="months" id="srcw"></div></div>
+</div>
+
+
+<div class="charts" id="charts"></div>
+</div>
+<div id="leadsPage" hidden>
+<p><a href="#" style="color:var(--tx);font-weight:600;text-decoration:none">← Back to Home</a></p>
+<div class="tbar"><span id="impmsg" style="font-weight:700;color:#07294d"></span><input id="q" class="tsearch" placeholder="Search name or email"><button class="p" id="addtog" type="button" aria-expanded="false">Add Lead</button><button id="tcsv" title="One template for CSV and Excel: open it in Excel, fill it in, then import it as .csv or .xlsx">Download Template</button><button id="imp">Import file</button><input type="file" id="file" accept=".csv,.xlsx,.xls" hidden><button id="exp">Export CSV</button></div>
+<div class="panel" id="lbar" hidden>
+  <div class="row">
+    <label class="fl">Lead No.<input id="ln" readonly title="Lead number (automatic)" size="7" style="font-weight:800;text-align:center;color:#07294d"></label>
+    <label class="fl">Date<input id="dt" type="date" title="Lead date"></label>
+    <label class="fl">Name<input id="n" placeholder="Name" size="14"></label>
+    <label class="fl">Email<input id="e" type="email" placeholder="Email" size="22"></label>
+    <label class="fl">Phone<input id="ph" type="tel" placeholder="Phone" size="14"></label>
+    <label class="fl">Source<select id="src"><option value="">Select</option><option>Srinivas</option><option>Praveen</option><option>Aditi</option><option>Pooja</option></select></label>
+    <label class="fl">Category<select id="m"><option value="">Select</option><option>Server Access</option><option>Course Videos</option><option>Server + Videos</option><option>Not Specified</option></select></label>
+    <button class="p" id="add">Save Lead</button>
+    <button id="lcancel" type="button">Cancel</button>
+  </div>
+</div>
+
+<div class="tabs" id="tabs"></div>
+<h2 id="lhead" style="margin:6px 0 10px;font-size:19px"></h2>
+<div class="pager" id="ltop"></div>
+<div class="panel wrap" style="padding:4px"><table><thead><tr><th>Lead No.</th><th>Lead Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Source</th><th>Category</th><th>Next step</th><th>Follow-Ups Date</th><th>Follow-ups</th><th>Status</th><th>Notes</th><th>Actions</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="pager" id="lfoot"></div>
+
+</div>
+<div id="usersPage" hidden>
+<p><a href="#" style="color:var(--tx);font-weight:600;text-decoration:none">← Back to Home</a></p>
+<div class="tbar"><span id="umsg" style="font-weight:700;color:#07294d"></span><input id="uq" class="tsearch" placeholder="Search name or email"><button class="p" id="uaddtog" type="button" aria-expanded="false">Add User</button><button id="utpl">Download Template</button><button id="uimp">Import file</button><input type="file" id="ufile" accept=".csv,.xlsx,.xls" hidden><button id="uexp">Export CSV</button></div>
+<div class="panel" id="ubar" hidden><div class="row">
+ <label class="fl">Employee Id<input id="ueid" size="10" style="font-weight:800;text-align:center;color:#07294d"></label>
+ <label class="fl">Date of Joining<input id="udoj" type="date"></label>
+ <label class="fl">First Name<input id="un" placeholder="First Name" size="14"></label>
+ <label class="fl">Last Name<input id="uln" placeholder="Last Name" size="14"></label>
+ <label class="fl">Email<input id="ue" type="email" placeholder="Email" size="22"></label>
+ <label class="fl">Phone<input id="uph" type="tel" placeholder="Phone" size="14"></label>
+ <label class="fl">User Category<select id="ucat"><option value="">Select</option><option>Admin</option><option>User</option></select></label>
+ <label class="fl">Status<select id="ust"><option value="">Select</option><option>Active</option><option>Inactive</option><option>Pending</option></select></label>
+ <button class="p" id="uadd">Save User</button>
+ <button id="ucancel" type="button">Cancel</button>
+</div></div>
+<div class="tabs" id="utabs"></div>
+<h2 id="uhead" style="margin:6px 0 10px;font-size:19px"></h2>
+<div class="pager" id="utop"></div>
+<div class="panel wrap" style="padding:4px"><table><thead><tr><th>Employee Id</th><th>Date of Joining</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Phone</th><th>User Category</th><th>Status</th><th>Actions</th></tr></thead><tbody id="urows"></tbody></table></div>
+<div class="pager" id="ufoot"></div>
+</div>
+<section id="view" hidden>
+  <p id="vback"><a href="#" style="color:var(--tx);font-weight:600;text-decoration:none">← Back to Home</a></p>
+  <div id="pbar" hidden>
+<div class="tbar"><span id="pmsg" style="font-weight:700;color:#07294d"></span><input id="pq" class="tsearch" placeholder="Search name or email"><button class="p" id="paddtog" type="button" aria-expanded="false">Add Payment</button><button id="ptpl">Download Template</button><button id="pimp">Import file</button><input type="file" id="pfile" accept=".csv,.xlsx,.xls" hidden><button id="pexp">Export CSV</button></div>
+<div class="panel" id="pform" hidden><div class="row">
+    <label class="fl">Lead No.<input id="pln" readonly title="Lead number (automatic)" size="7" style="font-weight:800;text-align:center;color:#07294d"></label>
+    <label class="fl">Date<input id="pdt" type="date" title="Date"></label>
+    <label class="fl">Name<input id="pn" placeholder="Name" size="14"></label>
+    <label class="fl">Email<input id="pe" type="email" placeholder="Email" size="22"></label>
+    <label class="fl">Phone<input id="pph" type="tel" placeholder="Phone" size="14"></label>
+    <label class="fl">Source<select id="psrc"><option value="">Select</option><option>Srinivas</option><option>Praveen</option><option>Aditi</option><option>Pooja</option></select></label>
+    <label class="fl">Category<select id="pm"><option value="">Select</option><option>Server Access</option><option>Course Videos</option><option>Server + Videos</option><option>Not Specified</option></select></label>
+    <label class="fl">Status<select id="pst"><option value="">Select</option><option>Paid</option><option>Follow-up</option><option>Refund</option></select></label>
+    <label class="fl">Paid Date<input id="ppd" type="date"></label>
+    <label class="fl">Payment Mode<select id="ppm"><option value="">Select</option><option>UPI</option><option>Bank Transfer</option><option>Money Transfer</option></select></label>
+    <label class="fl">Tenure Month<select id="ptn"><option value="">Select</option><option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option></select></label>
+    <label class="fl">Payment Type<select id="ppt"><option value="">Select</option><option>New</option><option>Renew</option></select></label>
+    <label class="fl">Bill Rate<input id="pbr" data-num="1" inputmode="decimal" placeholder="0" size="8"></label>
+    <label class="fl">Pay Rate<input id="ppr" data-num="1" inputmode="decimal" placeholder="0" size="8"></label>
+    <label class="fl">Margin<input id="pmg" readonly size="8" placeholder="0" style="font-weight:800;color:#07294d"></label>
+    <label class="fl">Total Amount<input id="pta" readonly size="10" placeholder="0" style="font-weight:800;color:#07294d"></label>
+    <button class="p" id="padd">Save Payment</button>
+    <button id="pcancel" type="button">Cancel</button>
+  </div></div>
+</div>
+  <div class="tabs" id="ptabs" hidden></div>
+    <h2 id="vt" style="margin:6px 0 10px;font-size:19px"></h2>
+  <div class="pager" id="vtop"></div>
+  <div class="panel wrap" style="padding:4px"><table><thead id="vhead"><tr><th>Lead No.</th><th>Lead Date</th><th>Name</th><th>Email</th><th>Phone</th><th>Source</th><th>Category</th><th>Status</th><th>Next step</th><th>Follow-ups</th><th>Notes</th><th>Updated</th><th></th></tr></thead><tbody id="vrows"></tbody></table></div>
+  <div class="pager" id="vfoot"></div>
+</section>
+<dialog id="vldlg" style="max-width:560px;width:92%"><p style="margin-top:0"><b>Data validation lists</b></p>
+<label class="fl">Field<select id="vl_list"></select></label>
+<div id="vl_items" style="margin:10px 0;max-height:46vh;overflow:auto"></div>
+<div class="row"><input id="vl_new" placeholder="Add a new option" maxlength="40" style="flex:1;min-width:0"><button id="vl_add" type="button">Add</button></div>
+<p id="vl_note" style="font-size:12.5px;color:var(--mu);margin:8px 0 0"></p>
+<p style="font-size:12.5px;color:var(--mu);margin:4px 0 0">Renaming an option also updates the records that use it. Removing an option stops it being offered, but records keep their old value.</p>
+<div id="vl_m" style="color:#c0392b;font-weight:600;font-size:13px;min-height:1.2em"></div>
+<div class="row" style="justify-content:flex-end"><button id="vl_x" type="button">Cancel</button><button class="p" id="vl_save" type="button">Save</button></div></dialog>
+<dialog id="ntdlg" style="max-width:560px;width:92%"><p style="margin-top:0"><b>Notifications and WhatsApp</b></p><div class="epay">
+<label class="ck" style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" id="nt_email"><span>Email all Admins when new leads are added. One summary email at most every 10 minutes, sent while an Admin has the page open.</span></label>
+<label class="fl">Default country code for WhatsApp numbers<input id="nt_cc" inputmode="numeric" placeholder="91" size="6"></label>
+<label class="fl">WhatsApp message (use {name}, {leadNo} and {category})<textarea id="nt_wa" rows="5"></textarea></label>
+<p style="font-size:12.5px;color:var(--mu);margin:0">The WhatsApp button opens the chat with this message ready, so you review and send it yourself. Sending straight from this page through Sent needs an approved message template on your Sent account.</p>
+<div id="nt_m" style="color:#c0392b;font-weight:600;font-size:13px;min-height:1.2em"></div>
+<div class="row" style="justify-content:flex-end"><button id="nt_x" type="button">Cancel</button><button class="p" id="nt_save" type="button">Save</button></div></div></dialog>
+<dialog id="wadlg" style="max-width:560px;width:92%"><p style="margin-top:0"><b id="wa_t">WhatsApp</b></p><p id="wa_s" style="margin:0 0 8px;font-size:13.5px"></p>
+<textarea id="wa_text" rows="6" style="min-height:130px"></textarea>
+<div class="row" style="justify-content:flex-end;margin-top:10px"><button id="wa_copy" type="button">Copy message</button><a id="wa_go" class="abtn" target="_blank" rel="noopener noreferrer">Open in WhatsApp</a><button id="wa_x" type="button">Close</button></div></dialog>
+<dialog id="mailsdlg" style="max-width:620px;width:92%"><p style="margin-top:0"><b id="ms_t">Activation email</b></p><p id="ms_s" style="margin:0 0 8px;font-size:13.5px"></p>
+<textarea id="ms_body" rows="12" readonly style="min-height:210px"></textarea>
+<div class="row" style="justify-content:flex-end;margin-top:10px"><button id="ms_copy" type="button">Copy text</button><a id="ms_gm" class="abtn" target="_blank" rel="noopener noreferrer">Open in Gmail</a><button id="ms_close" type="button">Close</button></div></dialog>
+<dialog id="rsdlg"><p style="margin-top:0"><b id="rs_t">Reason required</b></p><p id="rs_s" style="margin:0 0 8px;color:var(--mu);font-size:13px"></p>
+<textarea id="rs_note" rows="4" placeholder="Enter the reason or note (required)" style="min-height:90px"></textarea>
+<div id="rs_m" style="color:#c0392b;font-weight:600;font-size:13px;min-height:1.2em"></div>
+<div class="row" style="justify-content:flex-end"><button id="rs_x">Cancel</button><button class="p" id="rs_ok">Submit</button></div></dialog>
+<dialog id="actdlg" style="max-width:640px;width:92%"><p style="margin-top:0"><b id="act_t">Activity log</b></p><div id="act_list" style="max-height:60vh;overflow:auto"></div><div class="row" style="justify-content:flex-end;margin-top:10px"><button id="act_x">Close</button></div></dialog>
+<dialog id="pwdlg"><p style="margin-top:0"><b>Reset Password</b></p><div class="epay">
+<input id="rpc" type="password" placeholder="Current password" autocomplete="current-password">
+<input id="rpn" type="password" placeholder="New password (8+ characters)" autocomplete="new-password">
+<input id="rpn2" type="password" placeholder="Confirm new password" autocomplete="new-password">
+<div id="rpm" style="color:#c0392b;font-weight:600;font-size:13px;min-height:1.2em"></div>
+<div class="row" style="justify-content:flex-end"><button id="rpx">Cancel</button><button class="p" id="rps">Save</button></div></div></dialog>
+<dialog id="udlg"><p style="margin-top:0"><b>Edit user</b></p><div class="epay">
+<label class="fl">Employee Id<input id="ued_id"></label>
+<label class="fl">Date of Joining<input id="ued_doj" type="date"></label>
+<label class="fl">First Name<input id="ued_n"></label>
+<label class="fl">Last Name<input id="ued_ln"></label>
+<label class="fl">Email<input id="ued_e" type="email"></label>
+<label class="fl">Phone<input id="ued_p" type="tel"></label>
+<label class="fl">User Category<select id="ued_c"><option>Admin</option><option>User</option></select></label>
+<label class="fl">Status<select id="ued_s"><option>Active</option><option>Inactive</option><option>Pending</option></select></label>
+<div id="ued_m" style="color:#c0392b;font-weight:600;font-size:13px;min-height:1.2em"></div>
+<div class="row" style="justify-content:flex-end"><button id="ued_x">Cancel</button><button class="p" id="ued_save">Save</button></div></div></dialog>
+<dialog id="edlg">
+  <p style="margin-top:0"><b>Edit lead</b></p>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <input id="en" placeholder="Name"><input id="ee" type="email" placeholder="Email"><input id="ep" type="tel" placeholder="Phone"><input id="ed" type="date"><select id="es"></select><select id="em"></select>
+    <label class="fl">Notes<textarea id="enotes" rows="3" placeholder="Notes" style="min-height:70px"></textarea></label>
+    <div class="epay" id="epay" hidden>
+      <label class="fl">Status<select id="eps"><option>Paid</option><option>Follow-up</option><option>Refund</option></select></label>
+      <label class="fl">Paid Date<input id="epd" type="date"></label>
+      <label class="fl">Payment Mode<select id="epm"><option value="">Select</option><option>UPI</option><option>Bank Transfer</option><option>Money Transfer</option></select></label>
+      <label class="fl">Tenure Month<select id="etn"><option value="">Select</option><option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option></select></label>
+      <label class="fl">Payment Type<select id="ept"><option value="">Select</option><option>New</option><option>Renew</option></select></label>
+      <label class="fl">Bill Rate<input id="ebr" data-num="1" inputmode="decimal" placeholder="0"></label>
+      <label class="fl">Pay Rate<input id="epr" data-num="1" inputmode="decimal" placeholder="0"></label>
+      <label class="fl">Margin<input id="emg" readonly placeholder="0"></label>
+      <label class="fl">Total Amount<input id="eta" readonly placeholder="0"></label>
+    </div>
+  </div>
+  <div id="emsg" style="color:#c0392b;font-weight:600;font-size:13px;min-height:1.2em;margin-top:6px"></div>
+  <div class="row" style="margin-top:12px;justify-content:flex-end"><button id="ecancel">Cancel</button><button class="p" id="esave">Save</button></div>
+</dialog>
+</main>
+<script src="src/scripts/runtime-shim.js"></script>
+<script src="src/scripts/app.js"></script>
+</body>
+</html>

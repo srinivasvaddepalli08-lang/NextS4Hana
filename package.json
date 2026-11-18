@@ -1,0 +1,12 @@
+{
+  "name": "nexts4hana",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NextS4HANA leads CRM (static HTML/CSS/JavaScript app)",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "start": "node scripts/dev-server.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
