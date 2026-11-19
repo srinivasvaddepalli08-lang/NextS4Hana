@@ -40,8 +40,8 @@
   function notify() { listeners.slice().forEach(function (l) { try { l.cb(snapshot(l.col)); } catch (e) {} }); }
   window.addEventListener('storage', function (e) { if (e.key === KEY) notify(); });
 
-  var db = {
-    doc: function (path) {
+  var db = { and ends at line 71 with };
+    doc: function (path) { ... }
       return {
         get: function () {
           var store = load(), has = Object.prototype.hasOwnProperty.call(store, path);
@@ -55,7 +55,7 @@
         }
       };
     },
-    collection: function (col) {
+    collection: function (col) { ... }
       return {
         add: function (data) {
           var id = 'd' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8), s = load();
@@ -70,11 +70,6 @@
     }
   };
 
-  window.claude = {
-    use: function (name) {
-      if (name === 'db') return Promise.resolve(db);
-      if (name === 'user' || name === 'downloads') return Promise.resolve(null);
-      return Promise.reject(new Error('Not available outside claude.ai: ' + name));
-    }
-  };
+  window.claude = { use: ... }
+    };
 })();
